@@ -1,0 +1,962 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الفن العام | معرض الفنون المتنوعة</title>
+    <meta name="description" content="معرض الفن العام - موقع لعرض الرسومات الفنية المتنوعة من رسم يدوي ورقمي ومانغا وكوميكس وبورتريه وتجريدي">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap');
+        
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #ec4899;
+            --accent-color: #8b5cf6;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+        }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .art-gradient {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+        
+        .art-card {
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .art-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .art-card img {
+            transition: all 0.5s ease;
+        }
+        
+        .art-card:hover img {
+            transform: scale(1.05);
+        }
+        
+        .modal {
+            transition: all 0.3s ease;
+        }
+        
+        .language-switch {
+            cursor: pointer;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-color);
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+        
+        .filter-active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="text-3xl font-bold art-gradient text-transparent bg-clip-text flex items-center">
+                    <i class="fas fa-palette mr-2"></i>
+                    <span id="logo-text">الفن العام</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                <nav class="hidden md:flex space-x-6 rtl:space-x-reverse">
+                    <a href="#" class="text-gray-700 hover:text-indigo-600 transition" id="nav-home">الرئيسية</a>
+                    <a href="#gallery" class="text-gray-700 hover:text-indigo-600 transition" id="nav-gallery">المعرض</a>
+                    <a href="#about" class="text-gray-700 hover:text-indigo-600 transition" id="nav-about">عن الفنان</a>
+                    <a href="#contact" class="text-gray-700 hover:text-indigo-600 transition" id="nav-contact">تواصل معنا</a>
+                </nav>
+                
+                <div class="language-switch flex items-center border rounded-full px-3 py-1 text-sm">
+                    <span class="cursor-pointer px-2 font-medium" onclick="switchLanguage('ar')">عربي</span>
+                    <span class="text-gray-300">|</span>
+                    <span class="cursor-pointer px-2" onclick="switchLanguage('en')">EN</span>
+                </div>
+                
+                <button class="md:hidden text-gray-500 hover:text-gray-700" id="mobile-menu-button">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-white border-t" id="mobile-menu">
+            <div class="container mx-auto px-4 py-3">
+                <nav class="flex flex-col space-y-3">
+                    <a href="#" class="text-gray-700 hover:text-indigo-600 transition py-2">الرئيسية</a>
+                    <a href="#gallery" class="text-gray-700 hover:text-indigo-600 transition py-2">المعرض</a>
+                    <a href="#about" class="text-gray-700 hover:text-indigo-600 transition py-2">عن الفنان</a>
+                    <a href="#contact" class="text-gray-700 hover:text-indigo-600 transition py-2">تواصل معنا</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white">
+        <div class="absolute inset-0 bg-black opacity-30"></div>
+        <div class="container mx-auto px-4 py-20 md:py-32 relative z-10">
+            <div class="max-w-3xl mx-auto text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6" id="hero-title">معرض الفن العام</h1>
+                <p class="text-xl md:text-2xl mb-8 opacity-90" id="hero-subtitle">اكتشف عالماً من الإبداع الفني المتنوع من رسومات يدوية ورقمية وأنماط فنية متعددة</p>
+                <a href="#gallery" class="inline-block bg-white text-indigo-600 font-bold px-8 py-3 rounded-full hover:bg-opacity-90 transition transform hover:scale-105" id="hero-button">استكشف المعرض</a>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120">
+                <path fill="#f8f9fa" fill-opacity="1" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4 art-gradient text-transparent bg-clip-text inline-block" id="gallery-title">معرض الأعمال الفنية</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto" id="gallery-description">مجموعة متنوعة من الأعمال الفنية تعكس مختلف الأساليب والتقنيات</p>
+            </div>
+            
+            <!-- Filters -->
+            <div class="mb-8 flex flex-wrap justify-center gap-2">
+                <button class="filter-btn filter-active px-4 py-2 rounded-full text-sm font-medium transition" data-filter="all" id="filter-all">الكل</button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-sm font-medium transition hover:bg-gray-300" data-filter="digital" id="filter-digital">رسم رقمي</button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-sm font-medium transition hover:bg-gray-300" data-filter="traditional" id="filter-traditional">رسم يدوي</button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-sm font-medium transition hover:bg-gray-300" data-filter="manga" id="filter-manga">مانغا</button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-sm font-medium transition hover:bg-gray-300" data-filter="portrait" id="filter-portrait">بورتريه</button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-sm font-medium transition hover:bg-gray-300" data-filter="abstract" id="filter-abstract">تجريدي</button>
+            </div>
+            
+            <!-- Gallery Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="gallery-grid">
+                <!-- Art items will be dynamically generated here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold mb-4 art-gradient text-transparent bg-clip-text inline-block" id="about-title">عن الفنان</h2>
+                </div>
+                
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <div class="md:w-1/3">
+                        <div class="rounded-full overflow-hidden border-4 border-indigo-500 shadow-lg w-48 h-48 mx-auto">
+                            <svg class="w-full h-full text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <div class="md:w-2/3 mt-6 md:mt-0">
+                        <h3 class="text-2xl font-bold mb-4 text-gray-800" id="artist-name">الفنان المبدع</h3>
+                        <p class="text-gray-600 mb-4" id="artist-bio">مرحباً بكم في معرضي الفني! أنا فنان شغوف بمختلف أنواع الفنون والتقنيات. بدأت رحلتي الفنية منذ الصغر، وتطورت مهاراتي عبر السنين لتشمل مجموعة متنوعة من الأساليب والتقنيات.</p>
+                        <p class="text-gray-600 mb-4" id="artist-bio-2">أستمد إلهامي من الطبيعة والثقافات المختلفة والحياة اليومية. أسعى دائماً لإيصال المشاعر والأفكار من خلال لوحاتي، وأؤمن بأن الفن هو لغة عالمية تتخطى الحدود والثقافات.</p>
+                        
+                        <div class="flex space-x-4 rtl:space-x-reverse mt-6">
+                            <a href="#" class="text-indigo-600 hover:text-indigo-800 transition">
+                                <i class="fab fa-instagram text-xl"></i>
+                            </a>
+                            <a href="#" class="text-indigo-600 hover:text-indigo-800 transition">
+                                <i class="fab fa-twitter text-xl"></i>
+                            </a>
+                            <a href="#" class="text-indigo-600 hover:text-indigo-800 transition">
+                                <i class="fab fa-behance text-xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold mb-4 art-gradient text-transparent bg-clip-text inline-block" id="contact-title">تواصل معنا</h2>
+                    <p class="text-gray-600" id="contact-description">هل لديك استفسار أو ترغب في طلب عمل فني مخصص؟ لا تتردد في التواصل معنا</p>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <form id="contact-form" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-gray-700 font-medium mb-2" id="label-name">الاسم</label>
+                                <input type="text" id="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" required>
+                            </div>
+                            <div>
+                                <label for="email" class="block text-gray-700 font-medium mb-2" id="label-email">البريد الإلكتروني</label>
+                                <input type="email" id="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" required>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="subject" class="block text-gray-700 font-medium mb-2" id="label-subject">الموضوع</label>
+                            <input type="text" id="subject" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" required>
+                        </div>
+                        
+                        <div>
+                            <label for="message" class="block text-gray-700 font-medium mb-2" id="label-message">الرسالة</label>
+                            <textarea id="message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" required></textarea>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold px-8 py-3 rounded-full hover:opacity-90 transition transform hover:scale-105" id="submit-button">إرسال الرسالة</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold mb-4 art-gradient text-transparent bg-clip-text inline-block" id="footer-about-title">الفن العام</h3>
+                    <p class="text-gray-400 mb-4" id="footer-about-text">معرض فني متخصص في عرض مختلف أنواع الفنون والرسومات بأساليب وتقنيات متنوعة.</p>
+                    <div class="flex space-x-4 rtl:space-x-reverse">
+                        <a href="#" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-behance"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4" id="footer-links-title">روابط سريعة</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition" id="footer-home">الرئيسية</a></li>
+                        <li><a href="#gallery" class="text-gray-400 hover:text-white transition" id="footer-gallery">المعرض</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition" id="footer-about">عن الفنان</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition" id="footer-contact">تواصل معنا</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4" id="footer-contact-title">معلومات التواصل</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope ml-2"></i>
+                            <span>info@generalart.com</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone ml-2"></i>
+                            <span>+123 456 7890</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-map-marker-alt ml-2"></i>
+                            <span id="footer-address">شارع الفنون، المدينة الإبداعية</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500">
+                <p id="copyright">© 2023 الفن العام. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Image Modal -->
+    <div id="image-modal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-90 flex items-center justify-center p-4">
+        <div class="relative max-w-4xl w-full">
+            <button id="close-modal" class="absolute top-0 right-0 -mt-12 -mr-12 text-white text-3xl hover:text-gray-300 transition">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="bg-white rounded-lg overflow-hidden shadow-2xl">
+                <div class="relative">
+                    <img id="modal-image" src="" alt="صورة العمل الفني" class="w-full h-auto">
+                    <button id="download-image" class="absolute bottom-4 right-4 bg-indigo-600 text-white px-4 py-2 rounded-full hover:bg-indigo-700 transition flex items-center">
+                        <i class="fas fa-download mr-2"></i>
+                        <span id="download-text">تحميل</span>
+                    </button>
+                </div>
+                
+                <div class="p-6">
+                    <h3 id="modal-title" class="text-2xl font-bold mb-2">عنوان العمل الفني</h3>
+                    <p id="modal-description" class="text-gray-600 mb-4">وصف العمل الفني والقصة وراءه...</p>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <span id="modal-category" class="mr-4"><i class="fas fa-tag mr-1"></i> التصنيف</span>
+                        <span id="modal-date"><i class="far fa-calendar-alt mr-1"></i> التاريخ</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Art Gallery Data
+        const artworks = [
+            {
+                id: 1,
+                title: "تجريد الألوان",
+                title_en: "Color Abstraction",
+                description: "لوحة تجريدية تعبر عن تناغم الألوان وانسجامها في تكوين فني مميز.",
+                description_en: "An abstract painting expressing the harmony of colors in a distinctive artistic composition.",
+                category: "abstract",
+                date: "2023",
+                image: createAbstractArt(600, 400, 1)
+            },
+            {
+                id: 2,
+                title: "وجه من الخيال",
+                title_en: "Imaginary Face",
+                description: "بورتريه لشخصية خيالية تجمع بين الواقعية والتعبيرية في أسلوب فني فريد.",
+                description_en: "A portrait of an imaginary character combining realism and expressionism in a unique artistic style.",
+                category: "portrait",
+                date: "2022",
+                image: createPortraitArt(600, 400, 2)
+            },
+            {
+                id: 3,
+                title: "شخصية أنمي",
+                title_en: "Anime Character",
+                description: "رسم لشخصية من عالم المانغا والأنمي بأسلوب ياباني تقليدي.",
+                description_en: "A drawing of a character from the world of manga and anime in a traditional Japanese style.",
+                category: "manga",
+                date: "2023",
+                image: createMangaArt(600, 400, 3)
+            },
+            {
+                id: 4,
+                title: "منظر طبيعي",
+                title_en: "Natural Landscape",
+                description: "رسم يدوي لمنظر طبيعي خلاب يجسد جمال الطبيعة وسحرها.",
+                description_en: "A hand drawing of a breathtaking natural landscape embodying the beauty and magic of nature.",
+                category: "traditional",
+                date: "2021",
+                image: createLandscapeArt(600, 400, 4)
+            },
+            {
+                id: 5,
+                title: "تكوين رقمي",
+                title_en: "Digital Composition",
+                description: "عمل فني رقمي يجمع بين عناصر مختلفة في تكوين إبداعي معاصر.",
+                description_en: "A digital artwork combining different elements in a contemporary creative composition.",
+                category: "digital",
+                date: "2023",
+                image: createDigitalArt(600, 400, 5)
+            },
+            {
+                id: 6,
+                title: "تجريد هندسي",
+                title_en: "Geometric Abstraction",
+                description: "لوحة تجريدية تعتمد على الأشكال الهندسية والألوان المتناغمة.",
+                description_en: "An abstract painting based on geometric shapes and harmonious colors.",
+                category: "abstract",
+                date: "2022",
+                image: createAbstractArt(600, 400, 6)
+            },
+            {
+                id: 7,
+                title: "بورتريه كلاسيكي",
+                title_en: "Classical Portrait",
+                description: "بورتريه بأسلوب كلاسيكي يحاكي أعمال الفنانين العظماء.",
+                description_en: "A portrait in a classical style emulating the works of great artists.",
+                category: "portrait",
+                date: "2021",
+                image: createPortraitArt(600, 400, 7)
+            },
+            {
+                id: 8,
+                title: "شخصيات كرتونية",
+                title_en: "Cartoon Characters",
+                description: "مجموعة من الشخصيات الكرتونية المرسومة بأسلوب مميز وألوان زاهية.",
+                description_en: "A collection of cartoon characters drawn in a distinctive style with vibrant colors.",
+                category: "manga",
+                date: "2023",
+                image: createMangaArt(600, 400, 8)
+            }
+        ];
+
+        // Function to create SVG art for different categories
+        function createAbstractArt(width, height, seed) {
+            const colors = ['#FF6B6B', '#4ECDC4', '#FFE66D', '#1A535C', '#F7B267'];
+            let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">`;
+            
+            // Background
+            svg += `<rect width="${width}" height="${height}" fill="#f8f8f8" />`;
+            
+            // Random shapes based on seed
+            const rng = seedRandom(seed);
+            for (let i = 0; i < 15; i++) {
+                const x = rng() * width;
+                const y = rng() * height;
+                const size = 20 + rng() * 100;
+                const color = colors[Math.floor(rng() * colors.length)];
+                const opacity = 0.3 + rng() * 0.7;
+                
+                if (i % 3 === 0) {
+                    // Circle
+                    svg += `<circle cx="${x}" cy="${y}" r="${size/2}" fill="${color}" opacity="${opacity}" />`;
+                } else if (i % 3 === 1) {
+                    // Rectangle
+                    svg += `<rect x="${x}" y="${y}" width="${size}" height="${size}" fill="${color}" opacity="${opacity}" />`;
+                } else {
+                    // Triangle
+                    const x2 = x + size;
+                    const x3 = x + size/2;
+                    const y2 = y;
+                    const y3 = y - size;
+                    svg += `<polygon points="${x},${y} ${x2},${y2} ${x3},${y3}" fill="${color}" opacity="${opacity}" />`;
+                }
+            }
+            
+            svg += '</svg>';
+            return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+        }
+
+        function createPortraitArt(width, height, seed) {
+            const colors = ['#2D3047', '#419D78', '#E0A458', '#FFD166', '#06D6A0'];
+            let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">`;
+            
+            // Background
+            svg += `<rect width="${width}" height="${height}" fill="#f0f0f0" />`;
+            
+            const rng = seedRandom(seed);
+            const bgColor = colors[Math.floor(rng() * colors.length)];
+            
+            // Background pattern
+            svg += `<rect width="${width}" height="${height}" fill="${bgColor}" opacity="0.1" />`;
+            
+            // Face outline
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const faceSize = Math.min(width, height) * 0.6;
+            
+            svg += `<ellipse cx="${centerX}" cy="${centerY}" rx="${faceSize/1.5}" ry="${faceSize/1.3}" fill="#F5D6BA" stroke="#333" stroke-width="2" />`;
+            
+            // Eyes
+            const eyeOffsetX = faceSize / 4;
+            const eyeOffsetY = -faceSize / 10;
+            const eyeSize = faceSize / 10;
+            
+            svg += `<circle cx="${centerX - eyeOffsetX}" cy="${centerY + eyeOffsetY}" r="${eyeSize}" fill="white" stroke="#333" stroke-width="1" />`;
+            svg += `<circle cx="${centerX + eyeOffsetX}" cy="${centerY + eyeOffsetY}" r="${eyeSize}" fill="white" stroke="#333" stroke-width="1" />`;
+            
+            // Pupils
+            svg += `<circle cx="${centerX - eyeOffsetX}" cy="${centerY + eyeOffsetY}" r="${eyeSize/2}" fill="#333" />`;
+            svg += `<circle cx="${centerX + eyeOffsetX}" cy="${centerY + eyeOffsetY}" r="${eyeSize/2}" fill="#333" />`;
+            
+            // Mouth
+            const mouthWidth = faceSize / 3;
+            const mouthHeight = faceSize / 15;
+            const mouthY = centerY + faceSize / 3;
+            
+            svg += `<path d="M${centerX - mouthWidth/2},${mouthY} Q${centerX},${mouthY + mouthHeight} ${centerX + mouthWidth/2},${mouthY}" fill="none" stroke="#333" stroke-width="2" />`;
+            
+            // Hair
+            const hairColor = colors[Math.floor(rng() * colors.length)];
+            svg += `<path d="M${centerX - faceSize/1.3},${centerY - faceSize/4} Q${centerX},${centerY - faceSize} ${centerX + faceSize/1.3},${centerY - faceSize/4}" fill="${hairColor}" />`;
+            
+            svg += '</svg>';
+            return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+        }
+
+        function createMangaArt(width, height, seed) {
+            const colors = ['#FF9AA2', '#FFB7B2', '#FFDAC1', '#E2F0CB', '#B5EAD7'];
+            let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">`;
+            
+            // Background
+            svg += `<rect width="${width}" height="${height}" fill="#fff" />`;
+            
+            const rng = seedRandom(seed);
+            
+            // Background pattern
+            for (let i = 0; i < 5; i++) {
+                const x = rng() * width;
+                const y = rng() * height;
+                const size = 10 + rng() * 30;
+                const color = colors[Math.floor(rng() * colors.length)];
+                svg += `<circle cx="${x}" cy="${y}" r="${size}" fill="${color}" opacity="0.3" />`;
+            }
+            
+            // Character
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const headSize = Math.min(width, height) * 0.4;
+            
+            // Head
+            svg += `<circle cx="${centerX}" cy="${centerY}" r="${headSize}" fill="#FFE0BD" stroke="#333" stroke-width="2" />`;
+            
+            // Eyes (manga style - large)
+            const eyeOffsetX = headSize / 3;
+            const eyeOffsetY = -headSize / 10;
+            const eyeWidth = headSize / 3;
+            const eyeHeight = headSize / 4;
+            
+            svg += `<ellipse cx="${centerX - eyeOffsetX}" cy="${centerY + eyeOffsetY}" rx="${eyeWidth/2}" ry="${eyeHeight/2}" fill="white" stroke="#333" stroke-width="2" />`;
+            svg += `<ellipse cx="${centerX + eyeOffsetX}" cy="${centerY + eyeOffsetY}" rx="${eyeWidth/2}" ry="${eyeHeight/2}" fill="white" stroke="#333" stroke-width="2" />`;
+            
+            // Pupils (manga style - reflections)
+            svg += `<circle cx="${centerX - eyeOffsetX}" cy="${centerY + eyeOffsetY}" r="${eyeWidth/4}" fill="#333" />`;
+            svg += `<circle cx="${centerX + eyeOffsetX}" cy="${centerY + eyeOffsetY}" r="${eyeWidth/4}" fill="#333" />`;
+            
+            // Highlights in eyes
+            svg += `<circle cx="${centerX - eyeOffsetX + eyeWidth/8}" cy="${centerY + eyeOffsetY - eyeHeight/8}" r="${eyeWidth/10}" fill="white" />`;
+            svg += `<circle cx="${centerX + eyeOffsetX + eyeWidth/8}" cy="${centerY + eyeOffsetY - eyeHeight/8}" r="${eyeWidth/10}" fill="white" />`;
+            
+            // Mouth (small)
+            const mouthWidth = headSize / 5;
+            const mouthY = centerY + headSize / 2;
+            
+            svg += `<path d="M${centerX - mouthWidth/2},${mouthY} Q${centerX},${mouthY + mouthWidth/4} ${centerX + mouthWidth/2},${mouthY}" fill="none" stroke="#333" stroke-width="1.5" />`;
+            
+            // Hair (colorful and spiky)
+            const hairColor = colors[Math.floor(rng() * colors.length)];
+            
+            // Top hair
+            svg += `<path d="M${centerX - headSize},${centerY} 
+                        Q${centerX - headSize*1.2},${centerY - headSize*0.8} ${centerX - headSize*0.5},${centerY - headSize*1.1}
+                        Q${centerX},${centerY - headSize*1.3} ${centerX + headSize*0.5},${centerY - headSize*1.1}
+                        Q${centerX + headSize*1.2},${centerY - headSize*0.8} ${centerX + headSize},${centerY}
+                        " fill="${hairColor}" stroke="#333" stroke-width="2" />`;
+            
+            svg += '</svg>';
+            return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+        }
+
+        function createLandscapeArt(width, height, seed) {
+            const colors = ['#1A535C', '#4ECDC4', '#F7FFF7', '#FF6B6B', '#FFE66D'];
+            let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">`;
+            
+            const rng = seedRandom(seed);
+            
+            // Sky
+            const skyColor = '#87CEEB';
+            svg += `<rect width="${width}" height="${height*0.6}" fill="${skyColor}" />`;
+            
+            // Sun
+            const sunX = width * (0.2 + rng() * 0.6);
+            const sunY = height * 0.2;
+            const sunRadius = Math.min(width, height) * 0.1;
+            svg += `<circle cx="${sunX}" cy="${sunY}" r="${sunRadius}" fill="#FFD700" />`;
+            
+            // Clouds
+            for (let i = 0; i < 3; i++) {
+                const cloudX = width * rng();
+                const cloudY = height * 0.1 + rng() * 0.2;
+                const cloudSize = Math.min(width, height) * (0.05 + rng() * 0.1);
+                
+                svg += `<circle cx="${cloudX}" cy="${cloudY}" r="${cloudSize}" fill="white" opacity="0.8" />`;
+                svg += `<circle cx="${cloudX + cloudSize*0.8}" cy="${cloudY}" r="${cloudSize*0.9}" fill="white" opacity="0.8" />`;
+                svg += `<circle cx="${cloudX + cloudSize*1.5}" cy="${cloudY}" r="${cloudSize*0.8}" fill="white" opacity="0.8" />`;
+            }
+            
+            // Mountains
+            const mountainColor = '#4B6455';
+            const mountainY = height * 0.6;
+            
+            // First mountain
+            svg += `<polygon points="0,${mountainY} ${width*0.4},${mountainY - height*0.3} ${width*0.7},${mountainY}" fill="${mountainColor}" />`;
+            
+            // Second mountain
+            svg += `<polygon points="${width*0.3},${mountainY} ${width*0.7},${mountainY - height*0.4} ${width},${mountainY}" fill="${mountainColor}" opacity="0.8" />`;
+            
+            // Ground
+            const groundColor = '#8BC34A';
+            svg += `<rect x="0" y="${mountainY}" width="${width}" height="${height - mountainY}" fill="${groundColor}" />`;
+            
+            // Trees
+            for (let i = 0; i < 5; i++) {
+                const treeX = width * (0.1 + rng() * 0.8);
+                const treeY = height * 0.7 + rng() * 0.2;
+                const treeHeight = height * (0.1 + rng() * 0.15);
+                const treeWidth = treeHeight * 0.4;
+                
+                // Trunk
+                svg += `<rect x="${treeX - treeWidth/6}" y="${treeY - treeHeight*0.4}" width="${treeWidth/3}" height="${treeHeight*0.4}" fill="#8B4513" />`;
+                
+                // Foliage
+                svg += `<circle cx="${treeX}" cy="${treeY - treeHeight*0.5}" r="${treeWidth/2}" fill="#2E7D32" />`;
+                svg += `<circle cx="${treeX - treeWidth/3}" cy="${treeY - treeHeight*0.6}" r="${treeWidth/2}" fill="#2E7D32" />`;
+                svg += `<circle cx="${treeX + treeWidth/3}" cy="${treeY - treeHeight*0.6}" r="${treeWidth/2}" fill="#2E7D32" />`;
+            }
+            
+            svg += '</svg>';
+            return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+        }
+
+        function createDigitalArt(width, height, seed) {
+            const colors = ['#3A86FF', '#FF006E', '#FFBE0B', '#FB5607', '#8338EC'];
+            let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">`;
+            
+            const rng = seedRandom(seed);
+            
+            // Background with gradient
+            const gradientId = `gradient-${seed}`;
+            const color1 = colors[Math.floor(rng() * colors.length)];
+            const color2 = colors[Math.floor(rng() * colors.length)];
+            
+            svg += `<defs>
+                <linearGradient id="${gradientId}" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="${color1}" stop-opacity="0.8"/>
+                    <stop offset="100%" stop-color="${color2}" stop-opacity="0.8"/>
+                </linearGradient>
+            </defs>`;
+            
+            svg += `<rect width="${width}" height="${height}" fill="url(#${gradientId})" />`;
+            
+            // Digital elements - grid
+            const gridSize = 20;
+            const gridOpacity = 0.2;
+            
+            svg += `<g opacity="${gridOpacity}">`;
+            for (let x = 0; x < width; x += gridSize) {
+                svg += `<line x1="${x}" y1="0" x2="${x}" y2="${height}" stroke="white" stroke-width="1" />`;
+            }
+            for (let y = 0; y < height; y += gridSize) {
+                svg += `<line x1="0" y1="${y}" x2="${width}" y2="${y}" stroke="white" stroke-width="1" />`;
+            }
+            svg += `</g>`;
+            
+            // Digital elements - geometric shapes
+            for (let i = 0; i < 15; i++) {
+                const x = rng() * width;
+                const y = rng() * height;
+                const size = 10 + rng() * 60;
+                const color = colors[Math.floor(rng() * colors.length)];
+                const opacity = 0.3 + rng() * 0.7;
+                
+                if (i % 4 === 0) {
+                    // Circle
+                    svg += `<circle cx="${x}" cy="${y}" r="${size/2}" fill="${color}" opacity="${opacity}" />`;
+                } else if (i % 4 === 1) {
+                    // Square
+                    svg += `<rect x="${x}" y="${y}" width="${size}" height="${size}" fill="${color}" opacity="${opacity}" />`;
+                } else if (i % 4 === 2) {
+                    // Triangle
+                    const x2 = x + size;
+                    const x3 = x + size/2;
+                    const y2 = y;
+                    const y3 = y - size;
+                    svg += `<polygon points="${x},${y} ${x2},${y2} ${x3},${y3}" fill="${color}" opacity="${opacity}" />`;
+                } else {
+                    // Hexagon
+                    const points = [];
+                    for (let j = 0; j < 6; j++) {
+                        const angle = j * Math.PI / 3;
+                        const pointX = x + size/2 * Math.cos(angle);
+                        const pointY = y + size/2 * Math.sin(angle);
+                        points.push(`${pointX},${pointY}`);
+                    }
+                    svg += `<polygon points="${points.join(' ')}" fill="${color}" opacity="${opacity}" />`;
+                }
+            }
+            
+            // Digital circuit lines
+            svg += `<g stroke="white" stroke-width="1.5" opacity="0.6" fill="none">`;
+            for (let i = 0; i < 8; i++) {
+                const startX = rng() * width;
+                const startY = rng() * height;
+                let currentX = startX;
+                let currentY = startY;
+                
+                let path = `M${startX},${startY} `;
+                
+                for (let j = 0; j < 5; j++) {
+                    const direction = Math.floor(rng() * 4);
+                    const distance = 20 + rng() * 60;
+                    
+                    if (direction === 0) currentX += distance;
+                    else if (direction === 1) currentX -= distance;
+                    else if (direction === 2) currentY += distance;
+                    else currentY -= distance;
+                    
+                    path += `L${currentX},${currentY} `;
+                }
+                
+                svg += `<path d="${path}" />`;
+            }
+            svg += `</g>`;
+            
+            svg += '</svg>';
+            return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+        }
+
+        // Simple seeded random number generator
+        function seedRandom(seed) {
+            return function() {
+                const x = Math.sin(seed++) * 10000;
+                return x - Math.floor(x);
+            };
+        }
+
+        // DOM Elements
+        const galleryGrid = document.getElementById('gallery-grid');
+        const imageModal = document.getElementById('image-modal');
+        const modalImage = document.getElementById('modal-image');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDescription = document.getElementById('modal-description');
+        const modalCategory = document.getElementById('modal-category');
+        const modalDate = document.getElementById('modal-date');
+        const closeModal = document.getElementById('close-modal');
+        const downloadImage = document.getElementById('download-image');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const contactForm = document.getElementById('contact-form');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+
+        // Current language
+        let currentLanguage = 'ar';
+
+        // Populate Gallery
+        function populateGallery(filter = 'all') {
+            galleryGrid.innerHTML = '';
+            
+            const filteredArtworks = filter === 'all' 
+                ? artworks 
+                : artworks.filter(artwork => artwork.category === filter);
+            
+            filteredArtworks.forEach(artwork => {
+                const artCard = document.createElement('div');
+                artCard.className = 'art-card bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition';
+                artCard.dataset.id = artwork.id;
+                
+                const title = currentLanguage === 'ar' ? artwork.title : artwork.title_en;
+                const description = currentLanguage === 'ar' ? artwork.description : artwork.description_en;
+                
+                artCard.innerHTML = `
+                    <div class="relative overflow-hidden h-48 bg-gray-100">
+                        <img src="${artwork.image}" alt="${title}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-bold mb-2">${title}</h3>
+                        <p class="text-gray-600 text-sm line-clamp-2">${description}</p>
+                        <div class="mt-3 flex justify-between items-center">
+                            <span class="text-xs text-gray-500">${artwork.date}</span>
+                            <button class="view-details bg-indigo-600 text-white text-sm px-3 py-1 rounded-full hover:bg-indigo-700 transition">
+                                ${currentLanguage === 'ar' ? 'عرض التفاصيل' : 'View Details'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                galleryGrid.appendChild(artCard);
+                
+                // Add click event to view details button
+                const viewDetailsBtn = artCard.querySelector('.view-details');
+                viewDetailsBtn.addEventListener('click', () => {
+                    openModal(artwork);
+                });
+            });
+        }
+
+        // Open Modal
+        function openModal(artwork) {
+            const title = currentLanguage === 'ar' ? artwork.title : artwork.title_en;
+            const description = currentLanguage === 'ar' ? artwork.description : artwork.description_en;
+            const categoryText = currentLanguage === 'ar' ? getCategoryNameArabic(artwork.category) : getCategoryNameEnglish(artwork.category);
+            
+            modalImage.src = artwork.image;
+            modalTitle.textContent = title;
+            modalDescription.textContent = description;
+            modalCategory.innerHTML = `<i class="fas fa-tag mr-1"></i> ${categoryText}`;
+            modalDate.innerHTML = `<i class="far fa-calendar-alt mr-1"></i> ${artwork.date}`;
+            
+            imageModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close Modal
+        closeModal.addEventListener('click', () => {
+            imageModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        });
+
+        // Download Image
+        downloadImage.addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.href = modalImage.src;
+            link.download = modalTitle.textContent.replace(/\s+/g, '-').toLowerCase() + '.svg';
+            link.click();
+        });
+
+        // Mobile Menu Toggle
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Contact Form Submission
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            // In a real application, you would send this data to a server
+            // For demo purposes, we'll just show an alert
+            alert(currentLanguage === 'ar' 
+                ? `شكراً ${name} على رسالتك! سنتواصل معك قريباً.` 
+                : `Thank you ${name} for your message! We'll get back to you soon.`);
+            
+            contactForm.reset();
+        });
+
+        // Filter Gallery
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Update active state
+                filterButtons.forEach(btn => btn.classList.remove('filter-active'));
+                button.classList.add('filter-active');
+                
+                // Filter gallery
+                const filter = button.dataset.filter;
+                populateGallery(filter);
+            });
+        });
+
+        // Language Switching
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            
+            // Update UI text
+            updateUIText();
+            
+            // Repopulate gallery with new language
+            const activeFilter = document.querySelector('.filter-active').dataset.filter;
+            populateGallery(activeFilter);
+        }
+
+        function updateUIText() {
+            const translations = {
+                'logo-text': { ar: 'الفن العام', en: 'General Art' },
+                'nav-home': { ar: 'الرئيسية', en: 'Home' },
+                'nav-gallery': { ar: 'المعرض', en: 'Gallery' },
+                'nav-about': { ar: 'عن الفنان', en: 'About' },
+                'nav-contact': { ar: 'تواصل معنا', en: 'Contact' },
+                'hero-title': { ar: 'معرض الفن العام', en: 'General Art Gallery' },
+                'hero-subtitle': { ar: 'اكتشف عالماً من الإبداع الفني المتنوع من رسومات يدوية ورقمية وأنماط فنية متعددة', en: 'Discover a world of diverse artistic creativity from hand drawings, digital art, and multiple artistic styles' },
+                'hero-button': { ar: 'استكشف المعرض', en: 'Explore Gallery' },
+                'gallery-title': { ar: 'معرض الأعمال الفنية', en: 'Art Gallery' },
+                'gallery-description': { ar: 'مجموعة متنوعة من الأعمال الفنية تعكس مختلف الأساليب والتقنيات', en: 'A diverse collection of artworks reflecting various styles and techniques' },
+                'filter-all': { ar: 'الكل', en: 'All' },
+                'filter-digital': { ar: 'رسم رقمي', en: 'Digital' },
+                'filter-traditional': { ar: 'رسم يدوي', en: 'Traditional' },
+                'filter-manga': { ar: 'مانغا', en: 'Manga' },
+                'filter-portrait': { ar: 'بورتريه', en: 'Portrait' },
+                'filter-abstract': { ar: 'تجريدي', en: 'Abstract' },
+                'about-title': { ar: 'عن الفنان', en: 'About the Artist' },
+                'artist-name': { ar: 'الفنان المبدع', en: 'Creative Artist' },
+                'artist-bio': { ar: 'مرحباً بكم في معرضي الفني! أنا فنان شغوف بمختلف أنواع الفنون والتقنيات. بدأت رحلتي الفنية منذ الصغر، وتطورت مهاراتي عبر السنين لتشمل مجموعة متنوعة من الأساليب والتقنيات.', en: 'Welcome to my art gallery! I am an artist passionate about various types of arts and techniques. I started my artistic journey since childhood, and my skills have developed over the years to include a diverse range of styles and techniques.' },
+                'artist-bio-2': { ar: 'أستمد إلهامي من الطبيعة والثقافات المختلفة والحياة اليومية. أسعى دائماً لإيصال المشاعر والأفكار من خلال لوحاتي، وأؤمن بأن الفن هو لغة عالمية تتخطى الحدود والثقافات.', en: 'I draw inspiration from nature, different cultures, and everyday life. I always strive to convey emotions and ideas through my paintings, and I believe that art is a universal language that transcends borders and cultures.' },
+                'contact-title': { ar: 'تواصل معنا', en: 'Contact Us' },
+                'contact-description': { ar: 'هل لديك استفسار أو ترغب في طلب عمل فني مخصص؟ لا تتردد في التواصل معنا', en: 'Do you have an inquiry or would you like to request a custom artwork? Feel free to contact us' },
+                'label-name': { ar: 'الاسم', en: 'Name' },
+                'label-email': { ar: 'البريد الإلكتروني', en: 'Email' },
+                'label-subject': { ar: 'الموضوع', en: 'Subject' },
+                'label-message': { ar: 'الرسالة', en: 'Message' },
+                'submit-button': { ar: 'إرسال الرسالة', en: 'Send Message' },
+                'footer-about-title': { ar: 'الفن العام', en: 'General Art' },
+                'footer-about-text': { ar: 'معرض فني متخصص في عرض مختلف أنواع الفنون والرسومات بأساليب وتقنيات متنوعة.', en: 'An art gallery specialized in displaying various types of arts and drawings with diverse styles and techniques.' },
+                'footer-links-title': { ar: 'روابط سريعة', en: 'Quick Links' },
+                'footer-home': { ar: 'الرئيسية', en: 'Home' },
+                'footer-gallery': { ar: 'المعرض', en: 'Gallery' },
+                'footer-about': { ar: 'عن الفنان', en: 'About' },
+                'footer-contact': { ar: 'تواصل معنا', en: 'Contact' },
+                'footer-contact-title': { ar: 'معلومات التواصل', en: 'Contact Information' },
+                'footer-address': { ar: 'شارع الفنون، المدينة الإبداعية', en: 'Arts Street, Creative City' },
+                'copyright': { ar: '© 2023 الفن العام. جميع الحقوق محفوظة.', en: '© 2023 General Art. All rights reserved.' },
+                'download-text': { ar: 'تحميل', en: 'Download' }
+            };
+            
+            // Update all translatable elements
+            for (const [id, texts] of Object.entries(translations)) {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = texts[currentLanguage];
+                }
+            }
+        }
+
+        function getCategoryNameArabic(category) {
+            const categories = {
+                'digital': 'رسم رقمي',
+                'traditional': 'رسم يدوي',
+                'manga': 'مانغا',
+                'portrait': 'بورتريه',
+                'abstract': 'تجريدي'
+            };
+            return categories[category] || category;
+        }
+
+        function getCategoryNameEnglish(category) {
+            const categories = {
+                'digital': 'Digital Art',
+                'traditional': 'Traditional Art',
+                'manga': 'Manga & Comics',
+                'portrait': 'Portrait',
+                'abstract': 'Abstract'
+            };
+            return categories[category] || category;
+        }
+
+        // Initialize the gallery
+        document.addEventListener('DOMContentLoaded', () => {
+            populateGallery();
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'964c3295854bb47f',t:'MTc1MzQ1MjE3NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
